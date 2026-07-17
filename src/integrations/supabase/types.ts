@@ -14,7 +14,161 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaign_metrics: {
+        Row: {
+          campaign_id: string | null
+          clicks: number
+          conversions: number
+          created_at: string
+          date: string
+          id: string
+          impressions: number
+          spend: number
+        }
+        Insert: {
+          campaign_id?: string | null
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          date?: string
+          id?: string
+          impressions?: number
+          spend?: number
+        }
+        Update: {
+          campaign_id?: string | null
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          date?: string
+          id?: string
+          impressions?: number
+          spend?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_metrics_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      campaigns: {
+        Row: {
+          clicks: number
+          conversions: number
+          created_at: string
+          daily_budget: number
+          id: string
+          impressions: number
+          meta_campaign_id: string | null
+          name: string
+          notes: string | null
+          objective: string | null
+          platform: string
+          spend: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          daily_budget?: number
+          id?: string
+          impressions?: number
+          meta_campaign_id?: string | null
+          name: string
+          notes?: string | null
+          objective?: string | null
+          platform: string
+          spend?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          clicks?: number
+          conversions?: number
+          created_at?: string
+          daily_budget?: number
+          id?: string
+          impressions?: number
+          meta_campaign_id?: string | null
+          name?: string
+          notes?: string | null
+          objective?: string | null
+          platform?: string
+          spend?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      creatives: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          mime_type: string | null
+          public_url: string
+          size_bytes: number | null
+          storage_path: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          mime_type?: string | null
+          public_url: string
+          size_bytes?: number | null
+          storage_path: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          mime_type?: string | null
+          public_url?: string
+          size_bytes?: number | null
+          storage_path?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      meta_integration: {
+        Row: {
+          account_name: string | null
+          ad_account_id: string | null
+          connected_at: string | null
+          created_at: string
+          id: string
+          is_connected: boolean
+          last_sync_at: string | null
+        }
+        Insert: {
+          account_name?: string | null
+          ad_account_id?: string | null
+          connected_at?: string | null
+          created_at?: string
+          id?: string
+          is_connected?: boolean
+          last_sync_at?: string | null
+        }
+        Update: {
+          account_name?: string | null
+          ad_account_id?: string | null
+          connected_at?: string | null
+          created_at?: string
+          id?: string
+          is_connected?: boolean
+          last_sync_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
