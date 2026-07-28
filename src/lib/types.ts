@@ -42,6 +42,7 @@ export type Campaign = {
 
 export type Creative = {
   id: string;
+  client_id: string | null;
   title: string;
   description: string | null;
   storage_path: string;
