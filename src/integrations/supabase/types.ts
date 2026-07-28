@@ -161,7 +161,6 @@ export type Database = {
       }
       creatives: {
         Row: {
-          client_id: string | null
           created_at: string
           description: string | null
           id: string
@@ -172,7 +171,6 @@ export type Database = {
           title: string
         }
         Insert: {
-          client_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -183,7 +181,6 @@ export type Database = {
           title: string
         }
         Update: {
-          client_id?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -193,15 +190,7 @@ export type Database = {
           storage_path?: string
           title?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "creatives_client_id_fkey"
-            columns: ["client_id"]
-            isOneToOne: false
-            referencedRelation: "clients"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       meta_integration: {
         Row: {
