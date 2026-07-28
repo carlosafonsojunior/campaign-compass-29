@@ -211,12 +211,17 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="Objetivo">
-            <input
+            <select
               value={form.objective}
               onChange={(e) => setForm({ ...form, objective: e.target.value })}
               className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
-              placeholder="Ex: Conversões"
-            />
+            >
+              {CAMPAIGN_OBJECTIVES.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Orçamento diário (R$)">
             <input
@@ -227,6 +232,22 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
             />
           </Field>
         </div>
+
+        <Field label="Cliente">
+          <select
+            value={form.client_id}
+            onChange={(e) => setForm({ ...form, client_id: e.target.value })}
+            className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
+          >
+            <option value="">Sem cliente vinculado</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+
 
         <Field label="Notas">
           <textarea
