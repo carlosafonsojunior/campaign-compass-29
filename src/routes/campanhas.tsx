@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { supabase } from "@/integrations/supabase/client";
-import { formatBRL, formatInt, pct, type Campaign } from "@/lib/types";
+import { formatBRL, formatInt, pct, CAMPAIGN_OBJECTIVES, type Campaign, type Client } from "@/lib/types";
 import { useState } from "react";
 import { toast } from "sonner";
 
