@@ -1,3 +1,26 @@
+export const CAMPAIGN_OBJECTIVES = [
+  "Reconhecimento de perfil",
+  "Tráfego",
+  "Engajamento",
+  "Leads",
+  "Promoção de app",
+  "Vendas",
+] as const;
+
+export type Client = {
+  id: string;
+  name: string;
+  kind: string;
+  document: string | null;
+  email: string | null;
+  phone: string | null;
+  company: string | null;
+  notes: string | null;
+  status: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type Campaign = {
   id: string;
   name: string;
@@ -10,10 +33,12 @@ export type Campaign = {
   impressions: number;
   conversions: number;
   meta_campaign_id: string | null;
+  client_id: string | null;
   notes: string | null;
   created_at: string;
   updated_at: string;
 };
+
 
 export type Creative = {
   id: string;

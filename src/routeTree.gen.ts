@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IntegracoesRouteImport } from './routes/integracoes'
 import { Route as CriativosRouteImport } from './routes/criativos'
+import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as CampanhasRouteImport } from './routes/campanhas'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -30,6 +31,11 @@ const CriativosRoute = CriativosRouteImport.update({
   path: '/criativos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClientesRoute = ClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CampanhasRoute = CampanhasRouteImport.update({
   id: '/campanhas',
   path: '/campanhas',
@@ -44,6 +50,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/campanhas': typeof CampanhasRoute
+  '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/campanhas': typeof CampanhasRoute
+  '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -59,19 +67,33 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/campanhas': typeof CampanhasRoute
+  '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/campanhas' | '/criativos' | '/integracoes' | '/sitemap.xml'
+  fullPaths:
+    | '/'
+    | '/campanhas'
+    | '/clientes'
+    | '/criativos'
+    | '/integracoes'
+    | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/campanhas' | '/criativos' | '/integracoes' | '/sitemap.xml'
+  to:
+    | '/'
+    | '/campanhas'
+    | '/clientes'
+    | '/criativos'
+    | '/integracoes'
+    | '/sitemap.xml'
   id:
     | '__root__'
     | '/'
     | '/campanhas'
+    | '/clientes'
     | '/criativos'
     | '/integracoes'
     | '/sitemap.xml'
@@ -80,6 +102,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CampanhasRoute: typeof CampanhasRoute
+  ClientesRoute: typeof ClientesRoute
   CriativosRoute: typeof CriativosRoute
   IntegracoesRoute: typeof IntegracoesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -108,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CriativosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clientes': {
+      id: '/clientes'
+      path: '/clientes'
+      fullPath: '/clientes'
+      preLoaderRoute: typeof ClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/campanhas': {
       id: '/campanhas'
       path: '/campanhas'
@@ -128,6 +158,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CampanhasRoute: CampanhasRoute,
+  ClientesRoute: ClientesRoute,
   CriativosRoute: CriativosRoute,
   IntegracoesRoute: IntegracoesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
