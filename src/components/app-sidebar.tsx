@@ -1,12 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Rocket, Film, Plug } from "lucide-react";
+import { LayoutDashboard, Rocket, Film, Plug, Users } from "lucide-react";
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Clientes", url: "/clientes", icon: Users },
   { title: "Campanhas", url: "/campanhas", icon: Rocket },
   { title: "Criativos", url: "/criativos", icon: Film },
   { title: "Integrações", url: "/integracoes", icon: Plug },
 ];
+
 
 export function AppSidebar({ connected, accountName }: { connected: boolean; accountName?: string | null }) {
   const currentPath = useRouterState({ select: (r) => r.location.pathname });

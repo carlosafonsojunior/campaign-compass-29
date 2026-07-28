@@ -58,6 +58,7 @@ export type Database = {
       campaigns: {
         Row: {
           clicks: number
+          client_id: string | null
           conversions: number
           created_at: string
           daily_budget: number
@@ -74,6 +75,7 @@ export type Database = {
         }
         Insert: {
           clicks?: number
+          client_id?: string | null
           conversions?: number
           created_at?: string
           daily_budget?: number
@@ -90,6 +92,7 @@ export type Database = {
         }
         Update: {
           clicks?: number
+          client_id?: string | null
           conversions?: number
           created_at?: string
           daily_budget?: number
@@ -101,6 +104,56 @@ export type Database = {
           objective?: string | null
           platform?: string
           spend?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          company: string | null
+          created_at: string
+          document: string | null
+          email: string | null
+          id: string
+          kind: string
+          name: string
+          notes: string | null
+          phone: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          document?: string | null
+          email?: string | null
+          id?: string
+          kind?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          document?: string | null
+          email?: string | null
+          id?: string
+          kind?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
           status?: string
           updated_at?: string
         }

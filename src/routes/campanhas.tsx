@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { supabase } from "@/integrations/supabase/client";
-import { formatBRL, formatInt, pct, type Campaign } from "@/lib/types";
+import { formatBRL, formatInt, pct, CAMPAIGN_OBJECTIVES, type Campaign, type Client } from "@/lib/types";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -131,10 +131,19 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({
     name: "",
     platform: "both" as "facebook" | "instagram" | "both",
-    objective: "",
+    objective: CAMPAIGN_OBJECTIVES[0] as string,
     daily_budget: "50",
     status: "active" as "active" | "paused",
+    client_id: "",
     notes: "",
+  });
+
+  const { data: clients = [] } = useQuery({
+    queryKey: ["clients"],
+    queryFn: async () => {
+      const { data } = await supabase.from("clients").select("*").order("name");
+      return (data ?? []) as Client[];
+    },
   });
 
   const create = useMutation({
@@ -145,6 +154,7 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
         objective: form.objective || null,
         daily_budget: Number(form.daily_budget) || 0,
         status: form.status,
+        client_id: form.client_id || null,
         notes: form.notes || null,
       });
       if (error) throw error;
@@ -156,6 +166,7 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 grid place-items-center p-6" onClick={onClose}>
@@ -200,12 +211,17 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
 
         <div className="grid grid-cols-2 gap-3">
           <Field label="Objetivo">
-            <input
+            <select
               value={form.objective}
               onChange={(e) => setForm({ ...form, objective: e.target.value })}
               className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
-              placeholder="Ex: Conversões"
-            />
+            >
+              {CAMPAIGN_OBJECTIVES.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
           </Field>
           <Field label="Orçamento diário (R$)">
             <input
@@ -216,6 +232,22 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
             />
           </Field>
         </div>
+
+        <Field label="Cliente">
+          <select
+            value={form.client_id}
+            onChange={(e) => setForm({ ...form, client_id: e.target.value })}
+            className="w-full bg-background border border-border rounded-md px-3 py-2 text-sm"
+          >
+            <option value="">Sem cliente vinculado</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </Field>
+
 
         <Field label="Notas">
           <textarea
