@@ -131,10 +131,19 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({
     name: "",
     platform: "both" as "facebook" | "instagram" | "both",
-    objective: "",
+    objective: CAMPAIGN_OBJECTIVES[0] as string,
     daily_budget: "50",
     status: "active" as "active" | "paused",
+    client_id: "",
     notes: "",
+  });
+
+  const { data: clients = [] } = useQuery({
+    queryKey: ["clients"],
+    queryFn: async () => {
+      const { data } = await supabase.from("clients").select("*").order("name");
+      return (data ?? []) as Client[];
+    },
   });
 
   const create = useMutation({
@@ -145,6 +154,7 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
         objective: form.objective || null,
         daily_budget: Number(form.daily_budget) || 0,
         status: form.status,
+        client_id: form.client_id || null,
         notes: form.notes || null,
       });
       if (error) throw error;
@@ -156,6 +166,7 @@ function NewCampaignDialog({ onClose }: { onClose: () => void }) {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
 
   return (
     <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 grid place-items-center p-6" onClick={onClose}>
