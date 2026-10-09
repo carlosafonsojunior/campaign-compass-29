@@ -3,11 +3,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import type { MetaIntegration } from "@/lib/types";
 import { CheckCircle2, XCircle, RefreshCw, Facebook, Instagram, ExternalLink } from "lucide-react";
-import { syncMetaCampaigns, testMetaConnection } from "@/lib/meta.functions";
+import { syncMetaCampaigns, testMetaConnection, getMetaAuthUrl } from "@/lib/meta.functions";
 
 export const Route = createFileRoute("/integracoes")({
   component: IntegrationsPage,
@@ -27,6 +27,19 @@ function IntegrationsPage() {
 
   const testFn = useServerFn(testMetaConnection);
   const syncFn = useServerFn(syncMetaCampaigns);
+  const authFn = useServerFn(getMetaAuthUrl);
+  const oauth = async () => {
+    const r = await authFn({ data: { origin: window.location.origin } });
+    if (!r.ok) return toast.error(r.error);
+    window.location.href = r.url;
+  };
+  useEffect(() => {
+    const m = new URLSearchParams(window.location.search).get("meta");
+    if (!m) return;
+    if (m === "ok") toast.success("Conta Meta conectada!");
+    else toast.error(`Falha ao conectar: ${m}`);
+    window.history.replaceState({}, "", "/integracoes");
+  }, []);
 
   const connect = useMutation({
     mutationFn: async () => {
@@ -102,6 +115,22 @@ function IntegrationsPage() {
               />
             </div>
           )}
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            <button
+              onClick={() => oauth()}
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-[#1877F2] text-primary-foreground text-sm font-semibold hover:opacity-90"
+            >
+              <Facebook className="size-4" /> Conectar com Facebook
+            </button>
+            <button
+              onClick={() => oauth()}
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-gradient-to-r from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-primary-foreground text-sm font-semibold hover:opacity-90"
+            >
+              <Instagram className="size-4" /> Conectar com Instagram
+            </button>
+          </div>
+          <p className="text-[11px] text-muted-foreground -mt-3">Login com sua conta Meta — conecta Facebook e Instagram de uma vez. Ou informe o ID manualmente:</p>
 
           <div className="space-y-3">
             <label className="block space-y-1.5">
