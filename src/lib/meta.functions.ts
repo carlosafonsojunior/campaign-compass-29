@@ -21,10 +21,26 @@ type FbCampaign = {
   };
 };
 
+async function getToken() {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { data } = await supabaseAdmin.from("meta_tokens").select("access_token").order("created_at", { ascending: false }).limit(1).maybeSingle();
+  return data?.access_token ?? process.env.META_ACCESS_TOKEN;
+}
+
+export const getMetaAuthUrl = createServerFn({ method: "POST" })
+  .inputValidator((d: { origin: string }) => z.object({ origin: z.string().url() }).parse(d))
+  .handler(async ({ data }) => {
+    const appId = process.env.META_APP_ID;
+    if (!appId) return { ok: false as const, error: "App da Meta ainda não configurado (META_APP_ID / META_APP_SECRET)." };
+    const redirect = `${data.origin}/api/public/meta/callback`;
+    const scope = "ads_read,business_management,pages_show_list,instagram_basic,read_insights";
+    return { ok: true as const, url: `https://www.facebook.com/v21.0/dialog/oauth?client_id=${appId}&redirect_uri=${encodeURIComponent(redirect)}&scope=${scope}` };
+  });
+
 export const syncMetaCampaigns = createServerFn({ method: "POST" }).handler(async () => {
-  const token = process.env.META_ACCESS_TOKEN;
+  const token = await getToken();
   if (!token) {
-    return { ok: false as const, error: "META_ACCESS_TOKEN não configurado. Adicione o token de acesso da Meta em Integrações." };
+    return { ok: false as const, error: "Conecte sua conta Meta em Integrações." };
   }
 
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -89,8 +105,8 @@ export const syncMetaCampaigns = createServerFn({ method: "POST" }).handler(asyn
 export const testMetaConnection = createServerFn({ method: "POST" })
   .inputValidator((d: { ad_account_id: string }) => z.object({ ad_account_id: z.string().min(1) }).parse(d))
   .handler(async ({ data }) => {
-    const token = process.env.META_ACCESS_TOKEN;
-    if (!token) return { ok: false as const, error: "META_ACCESS_TOKEN não configurado. Adicione o token em Integrações." };
+    const token = await getToken();
+    if (!token) return { ok: false as const, error: "Conecte sua conta Meta primeiro." };
     const acct = data.ad_account_id.startsWith("act_") ? data.ad_account_id : `act_${data.ad_account_id}`;
     const res = await fetch(`${GRAPH}/${acct}?fields=name,account_status,currency&access_token=${encodeURIComponent(token)}`);
     const body = await res.json();
