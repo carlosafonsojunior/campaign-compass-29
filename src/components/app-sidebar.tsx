@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Rocket, Film, Plug, Users } from "lucide-react";
+import { LayoutDashboard, Rocket, Film, Plug, Users, FileBarChart } from "lucide-react";
 
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Clientes", url: "/clientes", icon: Users },
   { title: "Campanhas", url: "/campanhas", icon: Rocket },
+  { title: "Relatórios", url: "/relatorios", icon: FileBarChart },
   { title: "Criativos", url: "/criativos", icon: Film },
   { title: "Integrações", url: "/integracoes", icon: Plug },
 ];
@@ -14,7 +15,7 @@ export function AppSidebar({ connected, accountName }: { connected: boolean; acc
   const currentPath = useRouterState({ select: (r) => r.location.pathname });
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 border-r border-border bg-surface/50 backdrop-blur-xl z-50 flex flex-col">
+    <aside className="fixed left-0 top-0 h-full w-64 border-r border-border bg-surface/50 backdrop-blur-xl z-50 flex flex-col print:hidden">
       <div className="p-6 flex items-center gap-3">
         <div className="size-8 bg-brand rounded-sm flex items-center justify-center">
           <div className="size-4 bg-background rotate-45" />

@@ -14,6 +14,7 @@ import { Route as CampanhasRouteImport } from './routes/campanhas'
 import { Route as ClientesRouteImport } from './routes/clientes'
 import { Route as CriativosRouteImport } from './routes/criativos'
 import { Route as IntegracoesRouteImport } from './routes/integracoes'
+import { Route as RelatoriosRouteImport } from './routes/relatorios'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const IntegracoesRoute = IntegracoesRouteImport.update({
   path: '/integracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RelatoriosRoute = RelatoriosRouteImport.update({
+  id: '/relatorios',
+  path: '/relatorios',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/relatorios': typeof RelatoriosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/relatorios': typeof RelatoriosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/clientes': typeof ClientesRoute
   '/criativos': typeof CriativosRoute
   '/integracoes': typeof IntegracoesRoute
+  '/relatorios': typeof RelatoriosRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/criativos'
     | '/integracoes'
+    | '/relatorios'
     | '/sitemap.xml'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/criativos'
     | '/integracoes'
+    | '/relatorios'
     | '/sitemap.xml'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/clientes'
     | '/criativos'
     | '/integracoes'
+    | '/relatorios'
     | '/sitemap.xml'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   ClientesRoute: typeof ClientesRoute
   CriativosRoute: typeof CriativosRoute
   IntegracoesRoute: typeof IntegracoesRoute
+  RelatoriosRoute: typeof RelatoriosRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
 }
 
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IntegracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/relatorios': {
+      id: '/relatorios'
+      path: '/relatorios'
+      fullPath: '/relatorios'
+      preLoaderRoute: typeof RelatoriosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClientesRoute: ClientesRoute,
   CriativosRoute: CriativosRoute,
   IntegracoesRoute: IntegracoesRoute,
+  RelatoriosRoute: RelatoriosRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
 }
 export const routeTree = rootRouteImport
