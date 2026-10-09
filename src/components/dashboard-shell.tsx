@@ -29,15 +29,15 @@ export function DashboardShell({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <AppSidebar connected={!!meta?.is_connected} accountName={meta?.account_name} />
-      <main className="pl-64">
-        <header className="h-20 border-b border-border flex items-center justify-between px-8 sticky top-0 bg-background/80 backdrop-blur-md z-40">
+      <main className="pl-64 print:pl-0">
+        <header className="h-20 border-b border-border flex items-center justify-between px-8 sticky top-0 bg-background/80 backdrop-blur-md z-40 print:hidden">
           <div>
             <h1 className="text-lg font-semibold text-foreground">{title}</h1>
             {subtitle && <p className="text-xs text-muted-foreground">{subtitle}</p>}
           </div>
           {actions && <div className="flex gap-3">{actions}</div>}
         </header>
-        <div className="p-8">{children}</div>
+        <div className="p-8 print:p-0">{children}</div>
       </main>
     </div>
   );
